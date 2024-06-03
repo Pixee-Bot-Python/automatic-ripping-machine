@@ -388,7 +388,7 @@ def generate_arm_cat(full_path):
     """
     read_log_file = open(full_path)
     while True:
-        new = read_log_file.readline()
+        new = read_log_file.readline(5_000_000)
         if new:
             if "ARM:" in new:
                 yield new
