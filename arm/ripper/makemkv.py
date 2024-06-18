@@ -11,6 +11,7 @@ from arm.models.track import Track
 from arm.ripper import utils  # noqa: E402
 from arm.ui import db  # noqa: F401, E402
 import arm.config.config as cfg  # noqa E402
+from security import safe_command
 
 
 class MakeMkvRuntimeError(RuntimeError):
@@ -185,7 +186,7 @@ def prep_mkv(logfile):
             # add MAKEMKV_PERMA_KEY as an argument to the command
             update_cmd = f"{update_cmd} {cfg.arm_config['MAKEMKV_PERMA_KEY']}"
 
-        subprocess.run(f"{update_cmd} >> {logfile}", capture_output=True, shell=True, check=True)
+        safe_command.run(subprocess.run, f"{update_cmd} >> {logfile}", capture_output=True, shell=True, check=True)
     except subprocess.CalledProcessError as update_err:
         err = f"Error updating MakeMKV key, return code: {update_err.returncode}"
         logging.error(err)
@@ -324,6 +325,6 @@ def run_makemkv(cmd, logfile):
     logging.debug(f"Ripping with the following command: {cmd}")
     try:
         # need to check output for '0 titles saved'
-        subprocess.run(f"{cmd} >> {logfile}", capture_output=True, shell=True, check=True)
+        safe_command.run(subprocess.run, f"{cmd} >> {logfile}", capture_output=True, shell=True, check=True)
     except subprocess.CalledProcessError as mkv_error:
         raise MakeMkvRuntimeError(mkv_error) from mkv_error
