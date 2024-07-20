@@ -388,7 +388,7 @@ def rip_music(job, logfile):
 
         try:
             # TODO check output and confirm all tracks ripped; find "Finished\.$"
-            subprocess.check_output(cmd, shell=True).decode("utf-8")
+            subprocess.check_output(cmd, shell=False).decode("utf-8")
             logging.info("abcde call successful")
             return True
         except subprocess.CalledProcessError as ab_error:
@@ -432,7 +432,7 @@ def rip_data(job):
           f'{os.path.join(job.config.LOGPATH, job.logfile)}'
     logging.debug(f"Sending command: {cmd}")
     try:
-        subprocess.check_output(cmd, shell=True).decode("utf-8")
+        subprocess.check_output(cmd, shell=False).decode("utf-8")
         full_final_file = os.path.join(final_path, f"{str(job.label)}.iso")
         logging.info(f"Moving data-disc from '{incomplete_filename}' to '{full_final_file}'")
         move_files_main(incomplete_filename, full_final_file, final_path)

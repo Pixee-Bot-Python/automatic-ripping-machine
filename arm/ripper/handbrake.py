@@ -59,7 +59,7 @@ def handbrake_main_feature(srcpath, basepath, logfile, job):
     logging.debug(f"Sending command: {cmd}")
 
     try:
-        subprocess.check_output(cmd, shell=True).decode("utf-8")
+        subprocess.check_output(cmd, shell=False).decode("utf-8")
         logging.info("Handbrake call successful")
         track.status = "success"
     except subprocess.CalledProcessError as hb_error:
@@ -139,8 +139,7 @@ def handbrake_all(srcpath, basepath, logfile, job):
             try:
                 hand_brake_output = subprocess.check_output(
                     cmd,
-                    shell=True
-                ).decode("utf-8")
+                    shell=False).decode("utf-8")
                 logging.debug(f"Handbrake exit code: {hand_brake_output}")
                 track.status = "success"
             except subprocess.CalledProcessError as hb_error:
@@ -221,8 +220,7 @@ def handbrake_mkv(srcpath, basepath, logfile, job):
         try:
             hand_break_output = subprocess.check_output(
                 cmd,
-                shell=True
-            ).decode("utf-8")
+                shell=False).decode("utf-8")
             logging.debug(f"Handbrake exit code: {hand_break_output}")
         except subprocess.CalledProcessError as hb_error:
             err = f"Handbrake encoding of file {shlex.quote(files)} failed with code: {hb_error.returncode}" \
@@ -347,8 +345,7 @@ def handbrake_char_encoding(cmd):
         hand_brake_output = subprocess.check_output(
             cmd,
             stderr=subprocess.STDOUT,
-            shell=True
-        ).decode('utf-8', 'ignore').splitlines()
+            shell=False).decode('utf-8', 'ignore').splitlines()
     except subprocess.CalledProcessError as hb_error:
         logging.error("Couldn't find a valid track with utf-8 encoding. Trying with cp437")
         logging.error(f"Specific error is: {hb_error}")
@@ -359,8 +356,7 @@ def handbrake_char_encoding(cmd):
             hand_brake_output = subprocess.check_output(
                 cmd,
                 stderr=subprocess.STDOUT,
-                shell=True
-            ).decode('cp437').splitlines()
+                shell=False).decode('cp437').splitlines()
         except subprocess.CalledProcessError as hb_error:
             logging.error("Couldn't find a valid track. "
                           "Try running the command manually to see more specific errors.")

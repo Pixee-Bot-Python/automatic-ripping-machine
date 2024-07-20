@@ -77,7 +77,7 @@ class Job(db.Model):
         if self.disctype == "dvd" and not self.label:
             logging.info("No disk label Available. Trying lsdvd")
             command = f"lsdvd {devpath} | grep 'Disc Title' | cut -d ' ' -f 3-"
-            lsdvdlbl = str(subprocess.check_output(command, shell=True).strip(), 'utf-8')
+            lsdvdlbl = str(subprocess.check_output(command, shell=False).strip(), 'utf-8')
             self.label = lsdvdlbl
 
     def __str__(self):

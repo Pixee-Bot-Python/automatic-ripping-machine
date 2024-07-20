@@ -45,8 +45,7 @@ def makemkv(logfile, job):
     try:
         mdisc = subprocess.check_output(
             cmd,
-            shell=True
-        ).decode("utf-8")
+            shell=False).decode("utf-8")
         logging.info(f"MakeMKV disc number: {mdisc.strip()}")
         logging.debug(f"Disk raw number: {mdisc}")
     except subprocess.CalledProcessError as mdisc_error:
@@ -214,8 +213,7 @@ def get_track_info(mdisc, job):
         mkv = subprocess.check_output(
             cmd,
             stderr=subprocess.STDOUT,
-            shell=True
-        ).decode("utf-8").splitlines()
+            shell=False).decode("utf-8").splitlines()
     except subprocess.CalledProcessError as mdisc_error:
         raise MakeMkvRuntimeError(mdisc_error) from mdisc_error
 
