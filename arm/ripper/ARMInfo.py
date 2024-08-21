@@ -62,14 +62,14 @@ class ARMInfo:
 
     def get_arm_version(self):
         try:
-            version_file = open(os.path.join(self.install_path, 'VERSION'))
+            with open(os.path.join(self.install_path, 'VERSION')) as version_file:
 
-            try:
-                self.arm_version = version_file.read().strip()
+                try:
+                    self.arm_version = version_file.read().strip()
 
-            except (OSError, IOError) as e:
-                logging.info(f"ARM Version error: {e}")
-                self.arm_version = "unknown"
+                except (OSError, IOError) as e:
+                    logging.info(f"ARM Version error: {e}")
+                    self.arm_version = "unknown"
 
         except FileNotFoundError:
             self.arm_version = "unknown"
