@@ -707,7 +707,7 @@ def get_processor_name():
         cpu_info = subprocess.check_output(['/usr/sbin/sysctl', "-n", "machdep.cpu.brand_string"]).strip()
     elif platform.system() == "Linux":
         command = "cat /proc/cpuinfo"
-        fulldump = str(subprocess.check_output(command, shell=True).strip())
+        fulldump = str(subprocess.check_output(command, shell=False).strip())
         # Take any float trailing "MHz", some whitespace, and a colon.
         speeds = re.search(r"\\nmodel name\\t:.*?GHz\\n", fulldump)
         if speeds:
