@@ -386,14 +386,14 @@ def generate_arm_cat(full_path):
     :param full_path: full path to job logfile
     :return: None
     """
-    read_log_file = open(full_path)
-    while True:
-        new = read_log_file.readline()
-        if new:
-            if "ARM:" in new:
-                yield new
-            else:
-                sleep(1)
+    with open(full_path) as read_log_file:
+        while True:
+            new = read_log_file.readline()
+            if new:
+                if "ARM:" in new:
+                    yield new
+                else:
+                    sleep(1)
 
 
 def setup_database():
