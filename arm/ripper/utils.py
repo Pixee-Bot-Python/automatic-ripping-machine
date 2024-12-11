@@ -9,7 +9,6 @@ import fcntl
 import subprocess
 import shutil
 import time
-import random
 import re
 from pathlib import Path, PurePath
 
@@ -27,6 +26,7 @@ from arm.models.notifications import Notifications
 from arm.models.track import Track
 from arm.models.user import User
 from arm.ripper import apprise_bulk
+import secrets
 
 NOTIFY_TITLE = "ARM notification"
 
@@ -140,7 +140,7 @@ def sleep_check_process(process_str, transcode_limit):
             if transcode_limit > loop_count:
                 return True
             # Try to make each check at different times
-            random_time = random.randrange(20, 120, 10)
+            random_time = secrets.SystemRandom().randrange(20, 120, 10)
             logging.debug(f"sleeping for {random_time} seconds")
             time.sleep(random_time)
     else:
