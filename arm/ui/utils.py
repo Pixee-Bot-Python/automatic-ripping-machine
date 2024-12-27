@@ -14,7 +14,6 @@ from pathlib import Path
 from time import strftime, localtime, time, sleep
 
 import bcrypt
-import requests
 from werkzeug.routing import ValidationError
 from flask.logging import default_handler  # noqa: F401
 
@@ -29,6 +28,7 @@ from arm.models.user import User
 from arm.ui import app, db
 from arm.ui.metadata import tmdb_search, get_tmdb_poster, tmdb_find, call_omdb_api
 from arm.ui.settings import DriveUtils
+from security import safe_requests
 
 # Path definitions
 path_migrations = "arm/migrations"
@@ -588,7 +588,7 @@ def send_to_remote_db(job_id):
           f"&y={job.year}&imdb={job.imdb_id}" \
           f"&hnt={job.hasnicetitle}&l={job.label}&vt={job.video_type}"
     app.logger.debug(url.replace(api_key, "<api_key>"))
-    response = requests.get(url)
+    response = safe_requests.get(url)
     req = json.loads(response.text)
     app.logger.debug("req= " + str(req))
     job_dict = job.get_d().items()
