@@ -588,7 +588,7 @@ def send_to_remote_db(job_id):
           f"&y={job.year}&imdb={job.imdb_id}" \
           f"&hnt={job.hasnicetitle}&l={job.label}&vt={job.video_type}"
     app.logger.debug(url.replace(api_key, "<api_key>"))
-    response = requests.get(url)
+    response = requests.get(url, timeout=60)
     req = json.loads(response.text)
     app.logger.debug("req= " + str(req))
     job_dict = job.get_d().items()

@@ -116,7 +116,7 @@ def get_tmdb_poster(search_query=None, year=None):
 
     # Search tmdb for tv series
     url = f"https://api.themoviedb.org/3/search/tv?api_key={tmdb_api_key}&query={search_query}"
-    response = requests.get(url)
+    response = requests.get(url, timeout=60)
     search_results = json.loads(response.text)
     # app.logger.debug(json.dumps(response.json(), indent=4, sort_keys=True))
     if search_results['total_results'] > 0:
@@ -166,7 +166,7 @@ def tmdb_search(search_query=None, year=None):
     # Search for tv series
     app.logger.debug("tmdb_search - movie not found, trying tv series ")
     url = f"https://api.themoviedb.org/3/search/tv?api_key={tmdb_api_key}&query={search_query}"
-    response = requests.get(url)
+    response = requests.get(url, timeout=60)
     search_results = json.loads(response.text)
     if search_results['total_results'] > 0:
         app.logger.debug(search_results['total_results'])
@@ -215,12 +215,12 @@ def tmdb_get_imdb(tmdb_id):
           f"append_to_response=alternative_titles,credits,images,keywords,releases,reviews,similar,videos,external_ids"
     url_tv = f"https://api.themoviedb.org/3/tv/{tmdb_id}/external_ids?api_key={tmdb_api_key}"
     # Making a get request
-    response = requests.get(url)
+    response = requests.get(url, timeout=60)
     search_results = json.loads(response.text)
     # 'status_code' means id wasn't found
     if 'status_code' in search_results:
         # Try tv series
-        response = requests.get(url_tv)
+        response = requests.get(url_tv, timeout=60)
         tv_json = json.loads(response.text)
         app.logger.debug(tv_json)
         if 'status_code' not in tv_json:
@@ -240,7 +240,7 @@ def tmdb_find(imdb_id):
     poster_size = "original"
     poster_base = f"https://image.tmdb.org/t/p/{poster_size}"
     # Making a get request
-    response = requests.get(url)
+    response = requests.get(url, timeout=60)
     search_results = json.loads(response.text)
     # app.logger.debug(f"tmdb_find = {search_results}")
     if len(search_results['movie_results']) > 0:
@@ -299,6 +299,6 @@ def tmdb_fetch_results(search_query, year, tmdb_api_key):
     # "w92", "w154", "w185", "w342", "w500", "w780", "original"
     poster_size = "original"
     poster_base = f"https://image.tmdb.org/t/p/{poster_size}"
-    response = requests.get(url)
+    response = requests.get(url, timeout=60)
     return_json = json.loads(response.text)
     return return_json, poster_base, response
