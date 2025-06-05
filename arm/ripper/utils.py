@@ -259,7 +259,7 @@ def scan_emby():
         logging.info("Sending Emby library scan request")
         url = f"http://{cfg.arm_config['EMBY_SERVER']}:{cfg.arm_config['EMBY_PORT']}/Library/Refresh?api_key={cfg.arm_config['EMBY_API_KEY']}"  # noqa: E501
         try:
-            req = requests.post(url)
+            req = requests.post(url, timeout=60)
             if req.status_code > 299:
                 req.raise_for_status()
             logging.info("Emby Library Scan request successful")
