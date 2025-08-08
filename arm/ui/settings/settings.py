@@ -35,6 +35,7 @@ from arm.ui.settings import DriveUtils
 from arm.ui.forms import SettingsForm, UiSettingsForm, AbcdeForm, SystemInfoDrives
 from arm.ui.settings.ServerUtil import ServerUtil
 import arm.ripper.utils as ripper_utils
+from security import safe_command
 
 route_settings = Blueprint('route_settings', __name__,
                            template_folder='templates',
@@ -121,7 +122,7 @@ def check_hw_transcode_support():
         "amd": False
     }
     try:
-        hand_brake_output = subprocess.run(f"{cmd}", capture_output=True, shell=True, check=True)
+        hand_brake_output = safe_command.run(subprocess.run, f"{cmd}", capture_output=True, shell=True, check=True)
 
         # NVENC
         if re.search(r'nvenc: version ([0-9\\.]+) is available', str(hand_brake_output.stderr)):
